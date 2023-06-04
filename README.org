@@ -1,0 +1,4 @@
+* Data-driven web apps with Flask
+
+[[https://github.com/talkpython/data-driven-web-apps-with-flask/tree/0d4e4d72be982f7e5050ee1a7293dbe4ade40ba6][Repo-Talk-Python]]
+[[https://training.talkpython.fm/courses/details/building-data-driven-web-applications-in-python-with-flask-sqlalchemy-and-bootstrap][TalkPythonCourse]]
