@@ -2,3 +2,32 @@
 
 [[https://github.com/talkpython/data-driven-web-apps-with-flask/tree/0d4e4d72be982f7e5050ee1a7293dbe4ade40ba6][Repo-Talk-Python]]
 [[https://training.talkpython.fm/courses/details/building-data-driven-web-applications-in-python-with-flask-sqlalchemy-and-bootstrap][TalkPythonCourse]]
+
+* Templates (Jinja 2)
+
+- Goal: Given a list of category dictionaries with an image and name, display
+  them in a responsive grid
+  - Solution Jinja-Template
+
+- Model-view-controller Scheme
+  - controller (view-method)
+    #+begin_src python
+      def index():
+          test_packages = [
+              'package1',
+              'package2',
+              'package3',
+          ]
+          return flask.render_template('index.html', packages=test_packages)
+    #+end_src
+    - index.html is the view that we want to give
+    - packages in render_template is the name we refer to in our template
+
+- used CSS stylesheet
+  - block syntax
+  - span, colors
+
+* Mapping URL's to Actions or View-Methods
+
+- Trade-off Coding Simplicity and User Simplicity
+- static vs. dynamic urls
