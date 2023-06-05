@@ -31,3 +31,18 @@
 
 - Trade-off Coding Simplicity and User Simplicity
 - static vs. dynamic urls
+
+** Views
+
+- Idea is to factor our view-methods into different files
+
+* Chapter 7 Bootstrap and frontend CSS frameworks
+
+- Bootstrap is a frontend CSS framework
+- other frameworks:
+  - Semantic UI; Foundation (professionel designers), Materialize;
+  - Search for TOP 10 Front-End Frameworks
+
+* Links
+
+[[https://unsplash.com/][Unsplash - Free Pictures]]
