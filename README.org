@@ -46,3 +46,87 @@
 * Links
 
 [[https://unsplash.com/][Unsplash - Free Pictures]]
+
+* SQLAlchemy and Databases
+** General
+- SQLAlchemy is a Data-access layer
+- Provides an Object-relational Mapping (ORM)
+- Mature and Fast (High Performing)
+- DBA approved
+  - Can swap out automatique SQL statement with Hand-optimized statements
+- ORM = powerful and concise mapping of classes to data and queries
+- Unit of work (Design Pattern)
+  - Organizes pending /insert/update/delete/ into queues and flushes them all in
+    one batch
+  - contrary to *active record design pattern*
+- Databases Supported
+  - SQLite, PostgreSQL, MySQL, Oracle, MS-SQL, Firebird, Sybase and others
+- Eager Loading
+  - allows entire graphs of objects linked by collections and references to be
+    loaded with few or just one query
+
+** [[https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping][ORMs]]
+- programming technique for converting data between a relational Database and
+  the heap of an object-oriented programming language
+- difference between Object-Orientation in the programming language and
+  Storing of data by grouping scalars into, which are inserted into enumerated tables
+  - similarity: whole collection can be manipulated as a single compound entity
+  - differences:
+    - no inheritence
+    - references (object references vs key references)
+    - lifecylce management (row insertion and deletion vs garbage collection
+      and reference counting)
+    - database tuples are shared vs. on-heap full control by single process
+- heart of the problem: how to store the logical reprensentation of an object
+  into atomized form, capable of being stored inside a database while
+  preserving properties
+  - *Persistence* - this described functionality is implemented
+
+** Architeture
+
+- 3 layers
+  - Python DBAPI (Database API)
+  - SQLAlchemy Core
+  - Object Relational Mapper
+
+*** DBAPI
+- Standard API
+- defines a way that Python can talk to different Databases
+
+*** SQLAlchemy Core
+- defines:
+  - Schemas and Types
+  - SQL Expression Language
+  - Engine:
+    - Dialect (Dialect of SQL)
+    - manages Connection and Connection Pooling
+
+*** Object Relational Mapper
+- Object (Object in Object-oriented Programming)
+- Relation (Database)
+- a Mapper between those
+
+- What we need to do is:
+  - Define a bunch of classes that model our database
+    - Packages, Releases, Users, Maintainers
+- SQLAlchemy is going to create the Database
+
+** Code
+
+1. Setup Connection to Database
+   - Type (PostgreSQL, SQLite)
+2. Create a BaseClasses that wires stuff together
+3. Model our classes
+   - Mapping python classes into the table
+
+*** Create Classes
+
+- create fields by using SQLAlchemy-descriptors
+- Purposes:
+  - define Database Schema
+  -
+- Create Table "P"ackage (singular)
+
+*** Connection to Database
+
+- Operate around concept "Unit of Work" = "Session"
