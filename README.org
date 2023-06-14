@@ -130,3 +130,10 @@
 *** Connection to Database
 
 - Operate around concept "Unit of Work" = "Session"
+* Using SQLAlchemy
+** Bin Folder
+- little admin tasks (scripts)
+- not directly involved in running the site
+- more maintaining the site
+- e.g. import some data
+**
