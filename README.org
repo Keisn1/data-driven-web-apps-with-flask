@@ -180,3 +180,24 @@
    2. Send 302 redirect/welcome
 
 [[https://en.wikipedia.org/wiki/Post/Redirect/Get][Post/Redirect/Get]]
+** Register and Login
+- register and login html with css
+- basically an action method
+- validation (better at later stages)
+- passlib for password hashing and verifying
+- redirection to some site if success
+- db interactions
+  - create_user
+  - login_user
+  - querying if user already exists
+** Setting cookies
+- goal is to make temp-approved cookies, not changeable by someone
+* Viewmodels
+** Motivation
+- data exchange is deeply tied to
+  - html template
+  - what the view model has to pass to template
+- therefore every viewmodel is different and tied to template
+- but shared functionality:
+  - every template has to have cookies for shared layout
+  - most templates need to have error message
