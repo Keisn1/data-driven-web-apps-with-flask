@@ -137,3 +137,46 @@
 - more maintaining the site
 - e.g. import some data
 **
+
+* Alembic
+
+** Updating a column
+
+1. Create initial structure (scaffolding)
+   - Initializing
+   - inside folder that contains the WebApp
+   - alembic init alembic
+2. Edit alembic.init
+   1. Setup SqlAlchemy URL - sqlalchemy connection string
+3. Create a revision
+   - alembic revision --autogenerate -m 'Added last updated'
+   - might need to add the right path to be recognised
+   - folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+   - sys.path.insert(0, folder)
+   - The version is created
+4. Update the database
+   - alembic upgrade head
+
+** Creating a table
+1. Create revision
+   - will not work initially
+   - need to add the newly table to __all_models.py
+
+* User Input HTML and Validation
+
+** Forms
+1. Have an *action* and an *method*
+2. Forms contain *input* elements
+3. *inputs* have a *type* and *name* (and optionally *value*)
+** Get Post Redirect Pattern
+1. Client request page
+   - http GET /accounts/register
+   - will display HTML form
+2. Edit locally
+3. Click Submit
+   - most times a POST request
+4.
+   1. Save validated data
+   2. Send 302 redirect/welcome
+
+[[https://en.wikipedia.org/wiki/Post/Redirect/Get][Post/Redirect/Get]]

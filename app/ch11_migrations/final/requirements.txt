@@ -1,0 +1,6 @@
+flask
+sqlalchemy < 2
+
+progressbar2
+python-dateutil
+
