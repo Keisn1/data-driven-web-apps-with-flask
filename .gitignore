@@ -159,3 +159,4 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 *.DS_Store*
+/app/ch13-validation/final/pypi_org/db/pypi.sqlite

@@ -201,3 +201,213 @@
 - but shared functionality:
   - every template has to have cookies for shared layout
   - most templates need to have error message
+  -
+** How do they work
+1. User is submitting a form
+2.
+3.
+** Benefits
+- write simpler view-methods
+- provide 2 basic services
+  - data exchange and normalization
+  - validation
+* Testing
+- 3 types of tests Viewmodels, View and Integration
+** ViewModel
+- requires request object
+  - pre-populated
+- don't talk to DB directly
+- the 'simplest'
+** ViewMethod
+- also requires request
+- testing register_post
+** Integration
+- create entire web=application
+- fake HTTP requests
+** Organizing
+- all into test folder
+- typically group tests by controller
+* Deployment
+** Architecture/Topology
+1. Get Ubuntu Server
+2. Install NginX
+   - what people actually talk to
+   - on port 80 or 443 (encrypted) for regular HTTP
+   - serves up static files
+   - doesn't run python code
+   - delegates to the thing that runs python code
+3. MicroWSGI (uWSGI)
+   - will handle python requests
+   - multiple
+   - hosts Python Runtime
+   - copies of website, running in parallel
+*** Process
+- incoming https
+- inside server http to WSGI
+- assigns task to worker
+- responds to NginX
+
+** Hosting
+- i.e. DigitalOcean
+- ssh into the instance
+- first things to do:
+  - software patches
+  - apt update in the instance of ubuntu
+  - apt upgrade
+  - reboot!
+
+** Files
+*** server folder
+**** pypi.nginx
+**** pypi.service
+- unit file
+- background daemon
+- code gets run when system starts
+- runs uWSGI
+- create wsgi.py file
+  #+begin_src python
+    import pypi_org.app import app, main
+
+    if __name__ == '__main__':
+        main()
+  #+end_src
+**** server_setup.sh
+#+begin_src bash
+
+  #!/usr/bin/env bash
+
+  # Consider running these two commands separately
+  # Do a reboot before continuing.
+  apt update
+  apt upgrade -y
+
+  apt install zsh                 # install zsh
+  sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" # install oh-my-zsh
+
+  # Install some OS dependencies:
+  sudo apt-get install -y -q build-essential git unzip zip nload tree # install utilities
+  sudo apt-get install -y -q python3-pip python3-dev python3-venv     # install python dependencies
+  sudo apt-get install -y -q nginx
+  # for gzip support in uwsgi
+  sudo apt-get install --no-install-recommends -y -q libpcre3-dev libz-dev # gzip support in uWSGI
+
+  # Stop the hackers
+  sudo apt install fail2ban -y    # ssh fails are blacklisted
+
+  ufw allow 22                    # expose necessary ports
+  ufw allow 80                    # ufw = uncomplicated firewalls
+  ufw allow 443
+  ufw enable                      # turn it on
+
+  # Basic git setup
+  git config --global credential.helper cache
+  git config --global credential.helper 'cache --timeout=720000'
+
+  # Be sure to put your info here:
+  git config --global user.email "you@email.com" # if you ever want to push
+  git config --global user.name "Your name"
+
+  # Web app file structure
+  mkdir /apps
+  chmod 777 /apps
+  mkdir /apps/logs
+  mkdir /apps/logs/pypi
+  mkdir /apps/logs/pypi/app_log
+  cd /apps
+
+  # Create a virtual env for the app.
+  cd /apps
+  python3 -m venv venv
+  source /apps/venv/bin/activate
+  pip install --upgrade pip setuptools
+  pip install --upgrade httpie glances
+  pip install --upgrade uwsgi
+
+  # clone the repo:
+  cd /apps
+  git clone https://github.com/talkpython/data-driven-web-apps-with-flask app_repo
+
+  # Setup the web app:
+  cd cd /apps/app_repo/app/ch15_deploy/final/
+  pip install -r requirements.txt
+
+  # Copy and enable the daemon
+  cp /apps/app_repo/app/ch15_deploy/final/server/pypi.service /etc/systemd/system/pypi.service # this is running uWSGI PyPI server instance
+  # adds also behavior on server-startup
+  systemctl start pypi
+  systemctl status pypi
+  systemctl enable pypi
+
+  # Setup the public facing server (NGINX)
+  apt install nginx
+
+  # CAREFUL HERE. If you are using default, maybe skip this
+  rm /etc/nginx/sites-enabled/default
+
+  cp /apps/app_repo/app/ch15_deploy/final/server/pypi.nginx /etc/nginx/sites-enabled/pypi.nginx
+  update-rc.d nginx enable
+  service nginx restart
+
+
+  # Optionally add SSL support via Let's Encrypt:
+  # https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04
+
+  add-apt-repository ppa:certbot/certbot
+  apt install python-certbot-nginx
+  certbot --nginx -d fakepypi.talkpython.com
+#+end_src
+*** Tweaks
+- add source path/to/venv to zshrc or bashrc, so that of server entrance you're
+  inside the virtual env
+* What I learned
+
+** Jinja2 Basics
+  - dynamic templates
+  - {% *iterables* / *if statements* %} and { *values* } blocks
+    - {% endfor/endif %}
+
+** CSS and Layout pages
+- not replicating sites but use *extends* and create blocks
+  1. Create Jinja template
+  2. page template extends shared layout template
+
+** Routes
+- view methods and templates in place -> need to map URL's map over to viewmethods
+- <> brackets in url become variables in viewmethod
+  - even have constraints
+
+** Using bootstrap
+- take themes and plop into shared_layout
+  - include css and javascript files and images
+  - drop in theme
+  - startBootstrap and WrapBootstrap for themes
+
+** Querying data
+- Unit of Work design pattern
+  1. Create a session
+  2. Create a query
+  3. commit
+
+** Using alembic
+1. init alembic
+2. version revision
+3. remap schema
+
+** HTML forms and accepting Input
+- Get/Post/Redirect Pattern
+
+** View model pattern
+- Viewmodels
+  - tightly tied to html-form that they are exchanging data with
+  - can be used for validation
+  - makes testing easier
+  - makes action/view method simpler
+
+** Testing
+
+*** Viewmodel
+*** Viewmethods
+*** Integration
+- fake HTTP request
+** uWSGI
+** MongoDB
